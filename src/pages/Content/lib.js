@@ -2,7 +2,7 @@
  * @Author Gorden
  * @Date 2020-05-24 13:07:48
  * @LastEditors Gorden
- * @LastEditTime 2020-06-26 00:19:27
+ * @LastEditTime 2020-07-26 14:17:49
  */
 import axios from 'axios';
 import qs from 'qs';
@@ -114,18 +114,21 @@ async function hackTeacher(user, date) {
 export const book = async (users) => {
   users.forEach(async user => {
     const { data: { value } } = await checkTecher(user);
+    console.log(`${user.name}`, `GetTutorTime:`, value);
     if (user.preferTime.length !== 0) {
       const filterTime = value.filter(val => {
         const teacherTime = +new Date(`${val.time} ${user.preferTime[0]}`)
         if (!user.startDate) return true;
         return teacherTime >= + new Date(user.startDate);
       })
+      console.log(`${user.name}`, `filterTime:`, filterTime);
       filterTime.forEach(async data => {
         const { isfull, time } = data;
         if (isfull === 0) {
           const { data: { value: avTime } } = await getTime(user, time);
+          console.log(`${user.name}`, `getTime:`, avTime);
           const canBookTimes = await checkTimeInPreffer(avTime, user.preferTime, time);
-          console.log(canBookTimes);
+          console.log(`${user.name}`, `canBookTimes:`, canBookTimes);
           if (canBookTimes.length > 0) {
             canBookTimes.forEach(async timestamp => {
               const bookStatus = await bookTeacher(user, timestamp);
