@@ -17,7 +17,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.acadsoc.com.cn/*"
+        "https://www.acadsoc.com.cn/*",
+        "https://web.acadsoc.com.cn/*"
       ],
       "js": [
         "contentScript.bundle.js"
